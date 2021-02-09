@@ -4,7 +4,7 @@
     Compare the ESXi build version between two Hosts or multiple hosts objects 
 .DESCRIPTION
     Long description
-    File-Name:  Check-Host.ps1
+    File-Name:  Compare-EsxHostBuild.ps1
     Author:     Diego Holzer
     Version:    v0.0.1
     Changelog:
