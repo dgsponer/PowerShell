@@ -1,3 +1,30 @@
+<#
+.SYNOPSIS
+    Short description
+    Compare the ESXi build version between two Hosts or multiple hosts objects 
+.DESCRIPTION
+    Long description
+    File-Name:  Check-Host.ps1
+    Author:     Diego Holzer
+    Version:    v0.0.1
+    Changelog:
+                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
+.NOTES
+    Copyright (c) 2021 Diego Holzer,
+    licensed under the MIT License (https://mit-license.org/)
+.LINK
+    https://github.com/dholzer/PowerShell/vSphere
+.EXAMPLE
+    Run a normal check, true mean: the build is euqal
+    Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02'
+.EXAMPLE
+    Run a check from one host to a other host and get a list with the result, true mean: the build is euqal
+    Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02' -list
+.EXAMPLE
+    Run a check from one host to all other hosts and get a list with the result, true mean: the build is euqal
+    Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost (Get-VMHost) -list
+#>
+
 function Compare-EsxHostBuild {
     [CmdletBinding()]
     param (
