@@ -4,7 +4,9 @@ function Get-EsxNicInfo {
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 0)]
         $PrimaryHost,
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 1)]
-        $VmNic
+        $VmNic,
+        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
+        [switch]$AsJson
     )
 
     begin {
@@ -30,6 +32,12 @@ function Get-EsxNicInfo {
     }
 
     end {
-        return ($returnValue | Select-Object VMHost, * -ErrorAction Ignore)
+        $returnValue = $returnValue | Select-Object VMHost, * -ErrorAction Ignore
+        if ($AsJson) {
+            return ($returnValue | ConvertTo-Json -Depth 50)
+        }
+        else {
+            return $returnValue
+        }
     }
 }
