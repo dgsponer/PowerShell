@@ -79,12 +79,13 @@ function Compare-EsxHostBuild {
                 return ($returnValue | Sort-Object PrimaryVMHost) 
             }
         }
-        
-        if ($false -in $returnValue.Equal) {
-            return $false
-        }
         else {
-            return $true
+            if ($false -in $returnValue.Equal) {
+                return $false
+            }
+            else {
+                return $true
+            }
         }
     }
 }
