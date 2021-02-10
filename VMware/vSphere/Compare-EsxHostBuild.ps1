@@ -18,11 +18,11 @@
     Run a normal check, true mean: the build is euqal
     Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02'
 .EXAMPLE
-    Run a check from one host to a other host and get a list with the result, true mean: the build is euqal
-    Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02' -list
+    Run a check from one host to a other host and get a detailed list with the result, true mean: the build is euqal
+    Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02' -Details
 .EXAMPLE
-    Run a check from one host to all other hosts and get a list with the result, true mean: the build is euqal
-    Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost (Get-VMHost) -list
+    Run a check from one host to all other hosts and get a detailed list with the result in json, true mean: the build is euqal
+    Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost (Get-VMHost) -Details -AsJson
 #>
 
 function Compare-EsxHostBuild {
@@ -33,7 +33,9 @@ function Compare-EsxHostBuild {
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 1)]
         $SecondaryHost,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
-        [switch]$list = $false
+        [switch]$Details = $false,
+        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
+        [switch]$AsJson = $false
     )
 
     begin {
@@ -69,8 +71,13 @@ function Compare-EsxHostBuild {
     }
 
     end {
-        if ($list) {
-            return ($returnValue | Sort-Object PrimaryVMHost)
+        if ($Details) {
+            if ($AsJson) {
+                return ($returnValue | Sort-Object PrimaryVMHost | ConvertTo-Json -Depth 50)
+            }
+            else {
+                return ($returnValue | Sort-Object PrimaryVMHost) 
+            }
         }
         
         if ($false -in $returnValue.Equal) {
