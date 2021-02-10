@@ -1,4 +1,4 @@
-function Get-EsxNicInfo {
+function Get-EsxHostNicInfo {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 0)]
