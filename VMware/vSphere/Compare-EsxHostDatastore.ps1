@@ -6,7 +6,7 @@ function Compare-EsxHostDatastore {
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 1)]
         $SecondaryHost,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
-        [switch]$list = $false
+        [switch]$Details = $false
     )
 
     begin {
@@ -54,8 +54,13 @@ function Compare-EsxHostDatastore {
     }
 
     end {
-        if ($list) {
-            return ($returnValue | Sort-Object PrimaryVMHost, SecondaryVMHost)
+        if ($Details) {
+            if ($AsJson) {
+                return ($returnValue | Sort-Object PrimaryVMHost, SecondaryVMHost | ConvertTo-Json -Depth 50)
+            }
+            else {
+                return ($returnValue | Sort-Object PrimaryVMHost, SecondaryVMHost)
+            }
         }
         
         if ('missing' -in $returnValue.Status -OR 'to much' -in $returnValue.Status) {
