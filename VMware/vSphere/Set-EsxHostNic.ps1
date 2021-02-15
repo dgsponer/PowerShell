@@ -5,15 +5,14 @@ function Set-EsxHostNic {
         $PrimaryHost,
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 1)]
         $VmNic,
-        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
-        [switch]$Enable,
+        [Parameter(ValueFromPipeline, Mandatory = $true, Position = 2)]
+        [ValidateSet('Up','Down')]
+        $LinkState,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 3)]
-        [switch]$Disable,
-        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 4)]
         [int]$MaxTry = 3,
-        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 5)]
+        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 4)]
         [switch]$Details = $false,
-        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 6)]
+        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 5)]
         [switch]$AsJson = $false
     )
 
@@ -21,14 +20,15 @@ function Set-EsxHostNic {
         . .\Get-EsxHostNicInfo.ps1
         $returnValue = @()
 
-        if ($Enable) {
-            $mode = 'up'
-            $linkStatus = 'Up*'
-        }
-
-        if ($Disable) {
-            $mode = 'down'
-            $linkStatus = 'Down*'
+        switch ($LinkState) {
+            'Up' {
+                $mode = 'up'
+                $linkStatus = 'Up*'
+            }
+            'Down' {
+                $mode = 'down'
+                $linkStatus = 'Down*'    
+            }
         }
     }
 
