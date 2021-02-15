@@ -34,7 +34,7 @@ function Compare-EsxHostBuild {
         $SecondaryHost,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
         [switch]$Details = $false,
-        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
+        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 3)]
         [switch]$AsJson = $false
     )
 
