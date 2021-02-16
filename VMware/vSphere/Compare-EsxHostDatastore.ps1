@@ -6,7 +6,9 @@ function Compare-EsxHostDatastore {
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 1)]
         $SecondaryHost,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
-        [switch]$Details = $false
+        [switch]$Details = $false,
+        [Parameter(ValueFromPipeline, Mandatory = $false, Position = 3)]
+        [switch]$AsJson = $false
     )
 
     begin {
