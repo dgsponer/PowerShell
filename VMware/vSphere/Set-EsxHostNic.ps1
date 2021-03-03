@@ -7,9 +7,9 @@ function Set-EsxHostNic {
         $VmNic,
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 2)]
         [ValidateSet('Up','Down')]
-        $LinkState,
+        $State,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 3)]
-        [int]$MaxTry = 3,
+        [int]$WaitDelay = 15,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 4)]
         [switch]$Details = $false,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 5)]
@@ -17,17 +17,20 @@ function Set-EsxHostNic {
     )
 
     begin {
-        . .\Get-EsxHostNicInfo.ps1
+        if (!(Get-Command Get-EsxHostNicInfo -ErrorAction Ignore)) {
+            . .\Get-EsxHostNicInfo.ps1
+        }
+
         $returnValue = @()
 
-        switch ($LinkState) {
+        switch ($State) {
             'Up' {
                 $mode = 'up'
-                $linkStatus = 'Up*'
+                $linkStatusMsg = 'Up*'
             }
             'Down' {
                 $mode = 'down'
-                $linkStatus = 'Down*'    
+                $linkStatusMsg = 'Down*'
             }
         }
     }
@@ -44,12 +47,15 @@ function Set-EsxHostNic {
                 $arguments.nicname = $vmNicElement
     
                 $esxCliResult = $esxCli.network.nic.$mode.Invoke($arguments)
-                Start-Sleep 10
+                Start-Sleep $WaitDelay
+
+                $linkStatus = (Get-EsxHostNicInfo -PrimaryHost $primaryHostElement -VmNic $vmNicElement).LinkStatus
 
                 $value = [PSCustomObject]@{
                     VMHost = $primaryHostElement.Name
                     vmNic = $vmNicElement
-                    LinkStatus = (Get-EsxHostNicInfo -PrimaryHost $primaryHostElement -VmNic $vmNicElement).LinkStatus
+                    LinkStatus = $linkStatus
+                    TaskStatus = ($linkStatus -like $linkStatusMsg)
                     CliStatus = $esxCliResult
                 }
                 $returnValue += $value
@@ -68,7 +74,7 @@ function Set-EsxHostNic {
             }
         }
         else {
-            if ($false -in $returnValue.CliStatus) {
+            if ($false -in $returnValue.TaskStatus) {
                 return $false
             }
             else {
