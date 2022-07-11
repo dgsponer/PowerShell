@@ -36,6 +36,7 @@ function Get-EsxHostSwitchAndLinkInfo {
                         PrimaryHost = $primaryHostElement.Name
                         Switch = $SwitchElement.Name
                         Link = $SwitchElementNic
+                        Mac = $SwitchElementNic.Mac
                         Speed = $currentSpeed
                         MaxSpeed = $maxSpeed
                         Duplex = $currentDuplex
