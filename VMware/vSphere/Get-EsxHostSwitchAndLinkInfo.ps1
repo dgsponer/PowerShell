@@ -16,14 +16,14 @@
 .LINK
     https://github.com/dholzer/PowerShell/vSphere
 .EXAMPLE
-    Run a normal get, return value is a object with the switches and link infos
     Get-EsxHostSwitchAndLinkInfo -VMHost 'esxi01'
+    Run a normal get, return value is a object with the switches and link infos
 .EXAMPLE
-    Run a normal get, return value is a object from a sepcific switch and link infos
     Get-EsxHostSwitchAndLinkInfo -VMHost 'esxi01' -Switch 'vdSwitch'
+    Run a normal get, return value is a object from a sepcific switch and link infos
 .EXAMPLE
-    Run a normal get, return value is a object with the switch and link infos from multiple hosts
     Get-EsxHostSwitchAndLinkInfo -VMHost (Get-VMHost)
+    Run a normal get, return value is a object with the switch and link infos from multiple hosts
 #>
 
 function Get-EsxHostSwitchAndLinkInfo {

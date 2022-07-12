@@ -16,8 +16,8 @@
 .LINK
     https://github.com/dholzer/PowerShell/vSphere
 .EXAMPLE
-    Run a normal get, return value is a object with the switches and link infos
     Get-EsxHostvmKernelInfo -VMHost 'esxi01'
+    Run a normal get, return value is a object with the switches and link infos
 #>
 
 function Get-EsxHostvmKernelInfo {

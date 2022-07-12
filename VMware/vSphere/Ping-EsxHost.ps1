@@ -16,17 +16,17 @@
 .LINK
     https://github.com/dholzer/PowerShell/vSphere
 .EXAMPLE
-    Run a normal ping, return value is true for success
     Ping-EsxHost -VMHost 'esxi01' -DestinationAddress '172.16.0.1' -VmKernel 'vmk1'
+    Run a normal ping, return value is true for success
 .EXAMPLE
-    Run a normal ping, return value is a detailed list with informations about the ping
     Ping-EsxHost -VMHost 'esxi01' -DestinationAddress '172.16.0.1' -VmKernel 'vmk1' -Details
+    Run a normal ping, return value is a detailed list with informations about the ping
 .EXAMPLE
-    Run a ping to multiple addresses, return value is a detailed list with informations about the ping
     Ping-EsxHost -VMHost 'esxi01' -DestinationAddress @('172.16.0.1','172.16.0.2','172.16.0.3') -VmKernel 'vmk0' -Details
+    Run a ping to multiple addresses, return value is a detailed list with informations about the ping
 .EXAMPLE
-    Run a ping from multiple hosts to multiple addresses, return value is a detailed list with informations about the ping
     Ping-EsxHost -VMHost (Get-VMHost -State Connected) -DestinationAddress (Get-VMHost -State Connected | Get-VMHostNetworkAdapter -Name 'vmk0' -VMKernel).IP -VmKernel 'vmk0' -Details
+    Run a ping from multiple hosts to multiple addresses, return value is a detailed list with informations about the ping
 #>
 
 function Ping-EsxHost {

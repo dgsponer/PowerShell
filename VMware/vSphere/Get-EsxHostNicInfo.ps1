@@ -16,11 +16,11 @@
 .LINK
     https://github.com/dholzer/PowerShell/vSphere
 .EXAMPLE
-    Run a normal get, return value is a object with infos from the vmnic with state, connectivity...
     Get-EsxHostNicInfo -VMHost 'esxi01' -VmNic vmnic1
+    Run a normal get, return value is a object with infos from the vmnic with state, connectivity...
 .EXAMPLE
-    Run a normal get from multiple vmniccs, return value is a object with infos from multiple vmnic as json
     Get-EsxHostNicInfo -VMHost 'esxi01' -VmNic vmnic1, vmnic2 -AsJson
+    Run a normal get from multiple vmniccs, return value is a object with infos from multiple vmnic as json
 #>
 
 function Get-EsxHostNicInfo {

@@ -16,11 +16,11 @@
 .LINK
     https://github.com/dholzer/PowerShell/vSphere
 .EXAMPLE
-    Run a normal get, return value is a object with statistics from the vmnic
     Get-EsxHostNicStats -VMHost 'esxi01' -VmNic vmnic1
+    Run a normal get, return value is a object with statistics from the vmnic
 .EXAMPLE
-    Run a normal get, return value is a object with statistics from multiple vmnics in json
     Get-EsxHostNicStats -VMHost 'esxi01' -VmNic vmnic1, vmnic2 -AsJson
+    Run a normal get, return value is a object with statistics from multiple vmnics in json
 #>
 
 function Get-EsxHostNicStats {

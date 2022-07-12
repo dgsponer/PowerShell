@@ -16,17 +16,17 @@
 .LINK
     https://github.com/dholzer/PowerShell/vSphere
 .EXAMPLE
-    Run a normal get, return value is a other host in the same cluster with the same model (last one)
     Get-ClusterReferenceHost -VMHost 'esxi01'
+    Run a normal get, return value is a other host in the same cluster with the same model (last one)
 .EXAMPLE
-    Run a normal get, return value is a other host in the same cluster with the same model (first one)
     Get-ClusterReferenceHost -VMHost 'esxi01' -First
+    Run a normal get, return value is a other host in the same cluster with the same model (first one)
 .EXAMPLE
-    Run a normal get, return value is a other host in the same cluster with the same model, detailed list
     Get-ClusterReferenceHost -VMHost 'esxi01' -Details
+    Run a normal get, return value is a other host in the same cluster with the same model, detailed list
 .EXAMPLE
-    Run a normal get, return value is a other host in the same cluster with the same model, detailed list as json
     Get-ClusterReferenceHost -VMHost 'esxi01' -Details -AsJson
+    Run a normal get, return value is a other host in the same cluster with the same model, detailed list as json
 #>
 
 function Get-ClusterReferenceHost {

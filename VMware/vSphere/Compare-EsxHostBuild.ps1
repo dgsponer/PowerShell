@@ -15,14 +15,14 @@
 .LINK
     https://github.com/dholzer/PowerShell/vSphere
 .EXAMPLE
-    Run a normal check, true mean: the build is euqal
     Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02'
+    Run a normal check, true mean: the build is euqal
 .EXAMPLE
-    Run a check from one host to a other host and get a detailed list with the result, true mean: the build is euqal
     Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02' -Details
+    Run a check from one host to a other host and get a detailed list with the result, true mean: the build is euqal
 .EXAMPLE
-    Run a check from one host to all other hosts and get a detailed list with the result in json
     Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost (Get-VMHost) -Details -AsJson
+    Run a check from one host to all other hosts and get a detailed list with the result in json
 #>
 
 function Compare-EsxHostBuild {

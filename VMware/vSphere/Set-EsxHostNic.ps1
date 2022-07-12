@@ -1,3 +1,24 @@
+<#
+.SYNOPSIS
+    Short description
+    Take a ESX vmnic up or down
+.DESCRIPTION
+    Long description
+    File-Name:  Set-EsxHostNic.ps1
+    Author:     Diego Holzer
+    Version:    v0.0.2
+    Changelog:
+                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
+                v0.0.2, 2022-07-12, Diego Holzer: Change comparing behavor, Add examples.
+.NOTES
+    Copyright (c) 2021 Diego Holzer,
+    licensed under the MIT License (https://mit-license.org/)
+.LINK
+    https://github.com/dholzer/PowerShell/vSphere
+.EXAMPLE
+    Set-EsxHostNic -VMHost 'esxi01' -VmNic vmnic0 -State 'Down'
+    Take link vmnic0 down
+#>
 function Set-EsxHostNic {
     [CmdletBinding()]
     param (
