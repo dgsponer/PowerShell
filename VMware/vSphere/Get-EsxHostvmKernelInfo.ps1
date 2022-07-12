@@ -1,8 +1,30 @@
+<#
+.SYNOPSIS
+    Short description
+    Get the vmkernel, with ip and the assign switch and portgroup
+.DESCRIPTION
+    Long description
+    File-Name:  Get-EsxHostvmKernelInfo.ps1
+    Author:     Diego Holzer
+    Version:    v0.0.2
+    Changelog:
+                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
+                v0.0.2, 2022-07-12, Diego Holzer: Add examples.
+.NOTES
+    Copyright (c) 2021 Diego Holzer,
+    licensed under the MIT License (https://mit-license.org/)
+.LINK
+    https://github.com/dholzer/PowerShell/vSphere
+.EXAMPLE
+    Run a normal get, return value is a object with the switches and link infos
+    Get-EsxHostvmKernelInfo -VMHost 'esxi01'
+#>
+
 function Get-EsxHostvmKernelInfo {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 0)]
-        $PrimaryHost
+        $VMHost
     )
 
     begin {
@@ -10,18 +32,18 @@ function Get-EsxHostvmKernelInfo {
     }
 
     process {
-        if ($PrimaryHost.GetType().Name -ne 'VMHostImpl') {
-            $PrimaryHost = Get-VMHost $PrimaryHost
+        if ($VMHost.GetType().Name -ne 'VMHostImpl') {
+            $VMHost = Get-VMHost $VMHost
         }
 
-        foreach ($primaryHostElement in $PrimaryHost) {
-            $primaryHostElementVMKernels = $primaryHostElement | Get-VMHostNetworkAdapter -VMKernel
-            foreach ($vmKernel in $primaryHostElementVMKernels) {
-                $portGroup = Get-VirtualPortGroup -Name $vmKernel.PortGroupName -VMHost $primaryHostElement
+        foreach ($VMHostElement in $VMHost) {
+            $VMHostElementVMKernels = $VMHostElement | Get-VMHostNetworkAdapter -VMKernel
+            foreach ($vmKernel in $VMHostElementVMKernels) {
+                $portGroup = Get-VirtualPortGroup -Name $vmKernel.PortGroupName -VMHost $VMHostElement
                 $switch = $portGroup.VirtualSwitch
 
                 $value = [PSCustomObject]@{
-                    PrimaryHost = $primaryHostElement.Name
+                    VMHost = $VMHostElement.Name
                     Switch = $switch.Name
                     VMKernel = $vmKernel.Name
                     IP = $vmKernel.IP
@@ -33,6 +55,6 @@ function Get-EsxHostvmKernelInfo {
     }
 
     end {
-        return ($returnValue | Sort-Object PrimaryHost, VMKernel)
+        return ($returnValue | Sort-Object VMHost, VMKernel)
     }
 }

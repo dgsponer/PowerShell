@@ -1,8 +1,33 @@
+<#
+.SYNOPSIS
+    Short description
+    Get the esxcli host nic statistics
+.DESCRIPTION
+    Long description
+    File-Name:  Get-EsxHostNicStats.ps1
+    Author:     Diego Holzer
+    Version:    v0.0.2
+    Changelog:
+                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
+                v0.0.2, 2022-07-12, Diego Holzer: Add examples.
+.NOTES
+    Copyright (c) 2021 Diego Holzer,
+    licensed under the MIT License (https://mit-license.org/)
+.LINK
+    https://github.com/dholzer/PowerShell/vSphere
+.EXAMPLE
+    Run a normal get, return value is a object with statistics from the vmnic
+    Get-EsxHostNicStats -VMHost 'esxi01' -VmNic vmnic1
+.EXAMPLE
+    Run a normal get, return value is a object with statistics from multiple vmnics in json
+    Get-EsxHostNicStats -VMHost 'esxi01' -VmNic vmnic1, vmnic2 -AsJson
+#>
+
 function Get-EsxHostNicStats {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 0)]
-        $PrimaryHost,
+        $VMHost,
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 1)]
         $VmNic,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 2)]
@@ -14,18 +39,18 @@ function Get-EsxHostNicStats {
     }
 
     process {
-        if ($PrimaryHost.GetType().Name -ne 'VMHostImpl') {
-            $PrimaryHost = Get-VMHost $PrimaryHost
+        if ($VMHost.GetType().Name -ne 'VMHostImpl') {
+            $VMHost = Get-VMHost $VMHost
         }
 
-        foreach ($primaryHostElement in $PrimaryHost) {
+        foreach ($VMHostElement in $VMHost) {
             foreach ($vmNicElement in $VmNic) {
-                $esxCli = Get-EsxCli -V2 -VMHost $primaryHostElement
+                $esxCli = Get-EsxCli -V2 -VMHost $VMHostElement
                 $arguments = $esxCli.network.nic.stats.get.createArgs()
                 $arguments.nicname = $vmNicElement
 
                 $esxCliResult = $esxCli.network.nic.stats.get.Invoke($arguments)
-                $esxCliResult | Add-Member -Name 'VMHost' -Value $primaryHostElement.Name -MemberType NoteProperty
+                $esxCliResult | Add-Member -Name 'VMHost' -Value $VMHostElement.Name -MemberType NoteProperty
                 $returnValue += $esxCliResult
             }
         }

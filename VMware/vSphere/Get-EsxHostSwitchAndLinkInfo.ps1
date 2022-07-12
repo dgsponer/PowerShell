@@ -1,8 +1,36 @@
+<#
+.SYNOPSIS
+    Short description
+    Get the same data in powershell like the physical nic dialog in vventer
+.DESCRIPTION
+    Long description
+    File-Name:  Get-EsxHostSwitchAndLinkInfo.ps1
+    Author:     Diego Holzer
+    Version:    v0.0.2
+    Changelog:
+                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
+                v0.0.2, 2022-07-12, Diego Holzer: Add examples.
+.NOTES
+    Copyright (c) 2021 Diego Holzer,
+    licensed under the MIT License (https://mit-license.org/)
+.LINK
+    https://github.com/dholzer/PowerShell/vSphere
+.EXAMPLE
+    Run a normal get, return value is a object with the switches and link infos
+    Get-EsxHostSwitchAndLinkInfo -VMHost 'esxi01'
+.EXAMPLE
+    Run a normal get, return value is a object from a sepcific switch and link infos
+    Get-EsxHostSwitchAndLinkInfo -VMHost 'esxi01' -Switch 'vdSwitch'
+.EXAMPLE
+    Run a normal get, return value is a object with the switch and link infos from multiple hosts
+    Get-EsxHostSwitchAndLinkInfo -VMHost (Get-VMHost)
+#>
+
 function Get-EsxHostSwitchAndLinkInfo {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 0)]
-        $PrimaryHost,
+        $VMHost,
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 1)]
         $Switch = ''
     )
@@ -12,20 +40,20 @@ function Get-EsxHostSwitchAndLinkInfo {
     }
 
     process {
-        if ($PrimaryHost.GetType().Name -ne 'VMHostImpl') {
-            $PrimaryHost = Get-VMHost $PrimaryHost
+        if ($VMHost.GetType().Name -ne 'VMHostImpl') {
+            $VMHost = Get-VMHost $VMHost
         }
-        foreach ($primaryHostElement in $PrimaryHost) {
+        foreach ($VMHostElement in $VMHost) {
             
             if ($Switch.Length -ne 0) {
-                $switchObject = $primaryHostElement | Get-VirtualSwitch -Name $Switch
+                $switchObject = $VMHostElement | Get-VirtualSwitch -Name $Switch
             }
             else {
-                $switchObject = $primaryHostElement | Get-VirtualSwitch
+                $switchObject = $VMHostElement | Get-VirtualSwitch
             }
             
             foreach ($switchElement in $switchObject) {
-                $switchElementNics = $primaryHostElement | Get-VMHostNetworkAdapter -DistributedSwitch $switchElement -Physical | Sort-Object Name
+                $switchElementNics = $VMHostElement | Get-VMHostNetworkAdapter -DistributedSwitch $switchElement -Physical | Sort-Object Name
                 foreach ($switchElementNic in $switchElementNics) {
                     $maxSpeed = $switchElementNic.ExtensionData.ValidLinkSpecification.SpeedMb | Sort-Object -Descending | Select-Object -First 1
                     $currentSpeed = $switchElementNic.ExtensionData.LinkSpeed.SpeedMb
@@ -33,7 +61,7 @@ function Get-EsxHostSwitchAndLinkInfo {
                     $duplexAvailable = ($true -in ($switchElementNic.ExtensionData.ValidLinkSpecification | Where-Object {$_.SpeedMb -eq $currentSpeed}).Duplex)            
 
                     $value = [PSCustomObject]@{
-                        PrimaryHost = $primaryHostElement.Name
+                        VMHost = $VMHostElement.Name
                         Switch = $SwitchElement.Name
                         Link = $SwitchElementNic
                         Mac = $SwitchElementNic.Mac
@@ -49,6 +77,6 @@ function Get-EsxHostSwitchAndLinkInfo {
     }
 
     end {
-        return ($returnValue | Sort-Object PrimaryHost, Link)
+        return ($returnValue | Sort-Object VMHost, Link)
     }
 }

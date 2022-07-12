@@ -1,3 +1,31 @@
+<#
+.SYNOPSIS
+    Short description
+    Compare the mounted Datastores between two Hosts or multiple hosts objects 
+.DESCRIPTION
+    Long description
+    File-Name:  Compare-EsxHostDatastores.ps1
+    Author:     Diego Holzer
+    Version:    v0.0.1
+    Changelog:
+                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
+                v0.0.2, 2022-07-12, Diego Holzer: Add examples.
+.NOTES
+    Copyright (c) 2021 Diego Holzer,
+    licensed under the MIT License (https://mit-license.org/)
+.LINK
+    https://github.com/dholzer/PowerShell/vSphere
+.EXAMPLE
+    Run a normal check, true mean: both host have mounted the same datastores
+    Compare-EsxHostDatastores -PrimaryHost 'esxi01' -SecondaryHost 'esxi02'
+.EXAMPLE
+    Run a check from one host to a other host and get a detailed list with the result, true mean: the same datastores are mounted
+    Compare-EsxHostDatastores -PrimaryHost 'esxi01' -SecondaryHost 'esxi02' -Details
+.EXAMPLE
+    Run a check from one host to all other hosts and get a detailed list with the result in json
+    Compare-EsxHostDatastores -PrimaryHost 'esxi01' -SecondaryHost (Get-VMHost) -Details -AsJson
+#>
+
 function Compare-EsxHostDatastore {
     [CmdletBinding()]
     param (

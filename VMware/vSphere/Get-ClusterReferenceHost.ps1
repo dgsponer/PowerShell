@@ -1,3 +1,34 @@
+<#
+.SYNOPSIS
+    Short description
+    Get a host from the same cluster, with the same model 
+.DESCRIPTION
+    Long description
+    File-Name:  Get-ClusterReferenceHost.ps1
+    Author:     Diego Holzer
+    Version:    v0.0.2
+    Changelog:
+                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
+                v0.0.2, 2022-07-12, Diego Holzer: Add examples.
+.NOTES
+    Copyright (c) 2021 Diego Holzer,
+    licensed under the MIT License (https://mit-license.org/)
+.LINK
+    https://github.com/dholzer/PowerShell/vSphere
+.EXAMPLE
+    Run a normal get, return value is a other host in the same cluster with the same model (last one)
+    Get-ClusterReferenceHost -VMHost 'esxi01'
+.EXAMPLE
+    Run a normal get, return value is a other host in the same cluster with the same model (first one)
+    Get-ClusterReferenceHost -VMHost 'esxi01' -First
+.EXAMPLE
+    Run a normal get, return value is a other host in the same cluster with the same model, detailed list
+    Get-ClusterReferenceHost -VMHost 'esxi01' -Details
+.EXAMPLE
+    Run a normal get, return value is a other host in the same cluster with the same model, detailed list as json
+    Get-ClusterReferenceHost -VMHost 'esxi01' -Details -AsJson
+#>
+
 function Get-ClusterReferenceHost {
     [CmdletBinding()]
     param (

@@ -2,7 +2,7 @@ function Set-EsxHostNic {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 0)]
-        $PrimaryHost,
+        $VMHost,
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 1)]
         $VmNic,
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 2)]
@@ -36,23 +36,23 @@ function Set-EsxHostNic {
     }
 
     process {
-        if ($PrimaryHost.GetType().Name -ne 'VMHostImpl') {
-            $PrimaryHost = Get-VMHost $PrimaryHost
+        if ($VMHost.GetType().Name -ne 'VMHostImpl') {
+            $VMHost = Get-VMHost $VMHost
         }
 
-        foreach ($primaryHostElement in $PrimaryHost) {
+        foreach ($VMHostElement in $VMHost) {
             foreach ($vmNicElement in $VmNic) {
-                $esxCli = Get-EsxCli -V2 -VMHost $primaryHostElement
+                $esxCli = Get-EsxCli -V2 -VMHost $VMHostElement
                 $arguments = $esxCli.network.nic.$mode.createArgs()
                 $arguments.nicname = $vmNicElement
     
                 $esxCliResult = $esxCli.network.nic.$mode.Invoke($arguments)
                 Start-Sleep $WaitDelay
 
-                $linkStatus = (Get-EsxHostNicInfo -PrimaryHost $primaryHostElement -VmNic $vmNicElement).LinkStatus
+                $linkStatus = (Get-EsxHostNicInfo -VMHost $VMHostElement -VmNic $vmNicElement).LinkStatus
 
                 $value = [PSCustomObject]@{
-                    VMHost = $primaryHostElement.Name
+                    VMHost = $VMHostElement.Name
                     vmNic = $vmNicElement
                     LinkStatus = $linkStatus
                     TaskStatus = ($linkStatus -like $linkStatusMsg)

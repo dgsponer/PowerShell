@@ -21,7 +21,7 @@
     Run a check from one host to a other host and get a detailed list with the result, true mean: the build is euqal
     Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02' -Details
 .EXAMPLE
-    Run a check from one host to all other hosts and get a detailed list with the result in json, true mean: the build is euqal
+    Run a check from one host to all other hosts and get a detailed list with the result in json
     Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost (Get-VMHost) -Details -AsJson
 #>
 
