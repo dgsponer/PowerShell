@@ -9,8 +9,8 @@ Remove-VcdVamiDefaultServer,
 Get-VcdVamiApiAuthentication,
 Set-VcdVamiApiAuthentication,
 Remove-VcdVamiApiAuthentication,
-Get-VcdVamiApiHeader,
-Get-VcdVamiApiCall,
+Get-VcdVamiApiHeaders,
+Invoke-VcdVamiApiCall,
 Get-VcdVamiServices,
 Get-VcdVamiBackups,
 Get-VcdVamiFips,
@@ -45,7 +45,7 @@ function Get-VcdVamiServices {
 
     process {
         try {
-            $result = Get-VcdVamiApiCall $vcdVamiServer $endpoint
+            $result = Invoke-VcdVamiApiCall $vcdVamiServer $endpoint
         }
         catch {
             Write-Host $_.Exception.Message
@@ -71,7 +71,7 @@ function Get-VcdVamiBackups {
 
     process {
         try {
-            $result = Get-VcdVamiApiCall $vcdVamiServer $endpoint
+            $result = Invoke-VcdVamiApiCall $vcdVamiServer $endpoint
         }
         catch {
             Write-Host $_.Exception.Message
@@ -97,7 +97,7 @@ function Get-VcdVamiFips {
 
     process {
         try {
-            $result = Get-VcdVamiApiCall $vcdVamiServer $endpoint
+            $result = Invoke-VcdVamiApiCall $vcdVamiServer $endpoint
         }
         catch {
             Write-Host $_.Exception.Message
@@ -123,7 +123,7 @@ function Get-VcdVamiisPrimary {
 
     process {
         try {
-            $result = Get-VcdVamiApiCall $vcdVamiServer $endpoint
+            $result = Invoke-VcdVamiApiCall $vcdVamiServer $endpoint
         }
         catch {
             Write-Host $_.Exception.Message
@@ -149,7 +149,7 @@ function Get-VcdVamiMount {
 
     process {
         try {
-            $result = Get-VcdVamiApiCall $vcdVamiServer $endpoint
+            $result = Invoke-VcdVamiApiCall $vcdVamiServer $endpoint
         }
         catch {
             Write-Host $_.Exception.Message
@@ -175,7 +175,7 @@ function Get-VcdVamiNodes {
 
     process {
         try {
-            $result = Get-VcdVamiApiCall $vcdVamiServer $endpoint
+            $result = Invoke-VcdVamiApiCall $vcdVamiServer $endpoint
         }
         catch {
             Write-Host $_.Exception.Message
@@ -201,7 +201,7 @@ function Get-VcdVamiStorage {
 
     process {
         try {
-            $result = Get-VcdVamiApiCall $vcdVamiServer $endpoint
+            $result = Invoke-VcdVamiApiCall $vcdVamiServer $endpoint
         }
         catch {
             Write-Host $_.Exception.Message
@@ -227,7 +227,7 @@ function Get-VcdVamiTasks {
 
     process {
         try {
-            $result = Get-VcdVamiApiCall $vcdVamiServer $endpoint
+            $result = Invoke-VcdVamiApiCall $vcdVamiServer $endpoint
         }
         catch {
             Write-Host $_.Exception.Message
@@ -375,7 +375,7 @@ function Remove-VcdVamiApiAuthentication {
     }
 }
 
-function Get-VcdVamiApiHeader {
+function Get-VcdVamiApiHeaders {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, Mandatory = $false, Position = 0)]
@@ -387,14 +387,14 @@ function Get-VcdVamiApiHeader {
             $vcdVamiApiAuthentication = Get-Credential
         }
 
-        $vcdVamiHeader = @{}
+        $vcdVamiHeaders = @{}
     }
     
     process {
         try {
             $vcdVamiApiAuthorization = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($vcdVamiApiAuthentication.UserName+":"+($vcdVamiApiAuthentication.GetNetworkCredential().Password)))
 
-            $vcdVamiHeader = @{
+            $vcdVamiHeaders = @{
                 'Authorization' = 'Basic ' + $vcdVamiApiAuthorization
                 'Accept' = 'application/json'
             }
@@ -405,11 +405,11 @@ function Get-VcdVamiApiHeader {
     }
 
     end {
-        return $vcdVamiHeader
+        return $vcdVamiHeaders
     }
 }
 
-function Get-VcdVamiApiCall {
+function Invoke-VcdVamiApiCall {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, Mandatory = $true, Position = 0)]
@@ -423,7 +423,7 @@ function Get-VcdVamiApiCall {
     
     process {
         try {
-            $result = Invoke-WebRequest -SkipCertificateCheck -Headers (Get-VcdVamiApiHeader) -Method Get -Uri ('https://'+$vcdVamiServer+':5480/api/1.0.0/'+$endpoint) | ConvertFrom-Json
+            $result = Invoke-WebRequest -SkipCertificateCheck -Headers (Get-VcdVamiApiHeaders) -Method Get -Uri ('https://'+$vcdVamiServer+':5480/api/1.0.0/'+$endpoint) | ConvertFrom-Json
         }
         catch {
             Write-Host $_.Exception.Message
@@ -435,4 +435,4 @@ function Get-VcdVamiApiCall {
     }
 }
 
-Export-ModuleMember -Function Get-VcdVamiDefaultServer, Set-VcdVamiDefaultServer, Remove-VcdVamiDefaultServer, Get-VcdVamiApiAuthentication, Set-VcdVamiApiAuthentication, Remove-VcdVamiApiAuthentication, Get-VcdVamiApiHeader, Get-VcdVamiApiCall, Get-VcdVamiServices, Get-VcdVamiBackups, Get-VcdVamiFips, Get-VcdVamiisPrimary, Get-VcdVamiMount, Get-VcdVamiNodes, Get-VcdVamiStorage, Get-VcdVamiTasks, Get-VcdVamiVersion
+Export-ModuleMember -Function Get-VcdVamiDefaultServer, Set-VcdVamiDefaultServer, Remove-VcdVamiDefaultServer, Get-VcdVamiApiAuthentication, Set-VcdVamiApiAuthentication, Remove-VcdVamiApiAuthentication, Get-VcdVamiApiHeaders, Invoke-VcdVamiApiCall, Get-VcdVamiServices, Get-VcdVamiBackups, Get-VcdVamiFips, Get-VcdVamiisPrimary, Get-VcdVamiMount, Get-VcdVamiNodes, Get-VcdVamiStorage, Get-VcdVamiTasks, Get-VcdVamiVersion
