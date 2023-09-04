@@ -5,15 +5,15 @@
 .DESCRIPTION
     Long description
     File-Name:  Compare-EsxHostBuild.ps1
-    Author:     Diego Holzer
+    Author:     Diego Gsponer
     Version:    v0.0.1
     Changelog:
-                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
+                v0.0.1, 2021-02-09, Diego Gsponer: First implementation.
 .NOTES
-    Copyright (c) 2021 Diego Holzer,
+    Copyright (c) 2021 Diego Gsponer,
     licensed under the MIT License (https://mit-license.org/)
 .LINK
-    https://github.com/dholzer/PowerShell/vSphere
+    https://github.com/dgsponer/PowerShell/vSphere
 .EXAMPLE
     Compare-EsxHostBuild -PrimaryHost 'esxi01' -SecondaryHost 'esxi02'
     Run a normal check, true mean: the build is euqal
