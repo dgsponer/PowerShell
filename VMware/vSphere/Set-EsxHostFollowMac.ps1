@@ -5,15 +5,15 @@
 .DESCRIPTION
     Long description
     File-Name:  Set-EsxHostFollowMac.ps1
-    Author:     Diego Holzer
+    Author:     Diego Gsponer
     Version:    v0.0.1
     Changelog:
-                v0.0.1, 2022-07-12, Diego Holzer: First implementation.
+                v0.0.1, 2022-07-12, Diego Gsponer: First implementation.
 .NOTES
     Copyright (c) 2021 Diego Holzer,
     licensed under the MIT License (https://mit-license.org/)
 .LINK
-    https://github.com/dholzer/PowerShell/vSphere
+    https://github.com/dgsponer/PowerShell/vSphere
 .EXAMPLE
     Set-EsxHostFollowMac -VMHost 'esxi01'
     Enable take over the MacAddress from physical once the next reboot, returnvalue true or false
