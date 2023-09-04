@@ -39,7 +39,13 @@ function Get-EsxHostvmKernelInfo {
         foreach ($VMHostElement in $VMHost) {
             $VMHostElementVMKernels = $VMHostElement | Get-VMHostNetworkAdapter -VMKernel
             foreach ($vmKernel in $VMHostElementVMKernels) {
-                $portGroup = Get-VirtualPortGroup -Name $vmKernel.PortGroupName -VMHost $VMHostElement
+                $portGroupName = $vmKernel.PortGroupName
+                # Skip if vmKernel has empty portgroupname (i.e. NSX-T)
+                if ($portGroupName -eq $null){
+                    continue
+                }
+                
+                $portGroup = Get-VirtualPortGroup -Name $portGroupName -VMHost $VMHostElement
                 $switch = $portGroup.VirtualSwitch
 
                 $value = [PSCustomObject]@{
@@ -47,7 +53,7 @@ function Get-EsxHostvmKernelInfo {
                     Switch = $switch.Name
                     VMKernel = $vmKernel.Name
                     IP = $vmKernel.IP
-                    PortGroupName = $vmKernel.PortGroupName
+                    PortGroupName = $portGroupName
                 }
                 $returnValue += $value
             }
