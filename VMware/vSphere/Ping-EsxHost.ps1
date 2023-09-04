@@ -5,16 +5,16 @@
 .DESCRIPTION
     Long description
     File-Name:  Ping-EsxHost.ps1
-    Author:     Diego Holzer
+    Author:     Diego Gsponer
     Version:    v0.0.2
     Changelog:
-                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
-                v0.0.2, 2022-07-12, Diego Holzer: Change comparing behavor, Add examples.
+                v0.0.1, 2021-02-09, Diego Gsponer: First implementation.
+                v0.0.2, 2022-07-12, Diego Gsponer: Change comparing behavor, Add examples.
 .NOTES
-    Copyright (c) 2021 Diego Holzer,
+    Copyright (c) 2021 Diego Gsponer,
     licensed under the MIT License (https://mit-license.org/)
 .LINK
-    https://github.com/dholzer/PowerShell/vSphere
+    https://github.com/dgsponer/PowerShell/vSphere
 .EXAMPLE
     Ping-EsxHost -VMHost 'esxi01' -DestinationAddress '172.16.0.1' -VmKernel 'vmk1'
     Run a normal ping, return value is true for success
