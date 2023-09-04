@@ -5,16 +5,16 @@
 .DESCRIPTION
     Long description
     File-Name:  Get-ClusterReferenceHost.ps1
-    Author:     Diego Holzer
+    Author:     Diego Gsponer
     Version:    v0.0.2
     Changelog:
-                v0.0.1, 2021-02-09, Diego Holzer: First implementation.
-                v0.0.2, 2022-07-12, Diego Holzer: Add examples.
+                v0.0.1, 2021-02-09, Diego Gsponer: First implementation.
+                v0.0.2, 2022-07-12, Diego Gsponer: Add examples.
 .NOTES
-    Copyright (c) 2021 Diego Holzer,
+    Copyright (c) 2021 Diego Gsponer,
     licensed under the MIT License (https://mit-license.org/)
 .LINK
-    https://github.com/dholzer/PowerShell/vSphere
+    https://github.com/dgsponer/PowerShell/vSphere
 .EXAMPLE
     Get-ClusterReferenceHost -VMHost 'esxi01'
     Run a normal get, return value is a other host in the same cluster with the same model (last one)
